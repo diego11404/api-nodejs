@@ -1,0 +1,5 @@
+--uid bdd
+--reporter nyan
+-r test/helpers/setup
+-w
+-G
