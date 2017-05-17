@@ -1,6 +1,7 @@
 "use strict"
 let express = require('express'),
-  router = express.Router();
+  router = express.Router(),
+  _ = require('lodash');
 var movieDb = {}
 
 router.post('/', (req, res, next) => {
@@ -20,7 +21,16 @@ router.post('/', (req, res, next) => {
     .json({
       movie: movie
     })
-  console.log(movie);
+    console.log(movieDb[id]);
 
+})
+router.get('/',(req, res, next)=>{
+
+  res.status(201)
+      .json({
+      allmovies : _.values(movieDb)
+      })
+
+  
 })
 module.exports = router
