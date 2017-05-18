@@ -6,7 +6,7 @@ request = request(app)
 
 describe('Recurso /movie', () => {
   describe('/Post', () => {
-    it('Deberia crear una nueva movie', (done) => {
+    it('Deberia crear una nueva pelicula', (done) => {
       let movie = {
         "movie": {
           "title": "about time",
@@ -81,7 +81,6 @@ describe('Recurso /movie', () => {
           expect(allmovies).to.be.an('array')
             .and.to.have.length.above(2)
 
-
           let movie1 = _.find(allmovies, { id: id })
           let movie2 = _.find(allmovies, { id: id2 })
 
@@ -99,6 +98,40 @@ describe('Recurso /movie', () => {
         }, done)
 
 
+    })
+  })
+  describe('/Get:id',()=>{
+    it('Deberia Obtener una pelicula',(done)=>{
+      let id = "";
+      let data ={
+       "movie": {
+          "title": "Artificial Inteligence",
+          "year": "2018"
+        }
+      }
+        request.post('/movie')
+          .set('Accept', 'application/json')
+          .send(data)
+          .expect(201)
+          .expect('Content-Type', /application\/json/)
+        .then(res=>{
+            id = res.body.movie.id;
+            return request
+              .get('/movie/'+id)
+              .set('Accept', 'application/json')
+              .expect(200)
+              .expect("Content-Type", /application\/json/)
+          },done)
+        .then(res =>{
+          let body = res.body
+          expect(body).to.have.property('movieId')          
+          let movie = body.movieId
+          expect(movie).to.have.property("id",id)          
+          expect(movie).to.have.property("title","Artificial Inteligence")
+          expect(movie).to.have.property("year","2018")
+          done()
+          },done)   
+     
     })
   })
 })

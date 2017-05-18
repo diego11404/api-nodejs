@@ -24,6 +24,7 @@ router.post('/', (req, res, next) => {
     console.log(movieDb[id]);
 
 })
+
 router.get('/',(req, res, next)=>{
 
   res.status(201)
@@ -32,5 +33,12 @@ router.get('/',(req, res, next)=>{
       })
 
   
+})
+router.get('/:id',(req,res,next)=>{
+  let id = req.params.id
+  res.status(200)
+    .json({
+      movieId: movieDb[id]
+    })
 })
 module.exports = router
