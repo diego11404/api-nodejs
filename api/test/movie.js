@@ -56,8 +56,7 @@ describe('Recurso /movie', () => {
         .expect("Content-Type", /application\/json/)
         .then((res) => {
           id = res.body.movie.id;
-          console.log('ID1',id);
-          
+          console.log('ID1', id);
           return request
             .post('/movie')
             .set('Accept', 'application/json')
@@ -67,13 +66,13 @@ describe('Recurso /movie', () => {
         })
         .then((res) => {
           id2 = res.body.movie.id
-          console.log('ID2',id2);
+          console.log('ID2', id2);
           return request
             .get('/movie/')
             .set('Accept', 'application/json')
             .expect(201)
             .expect("Content-Type", /application\/json/)
-        },done)
+        }, done)
         .then(res => {
           let body = res.body;
           let allmovies = body.allmovies;
@@ -87,12 +86,12 @@ describe('Recurso /movie', () => {
           expect(movie1).to.have.property('title', 'tarzan')
           expect(movie1).to.have.property('year', '2200')
           expect(movie1).to.have.property('id', id)
-          
+
 
           expect(movie2).to.have.property('title', 'she want to breaking')
           expect(movie2).to.have.property('year', '2017')
           expect(movie2).to.have.property('id', id2)
-          
+
 
           done()
         }, done)
@@ -100,38 +99,109 @@ describe('Recurso /movie', () => {
 
     })
   })
-  describe('/Get:id',()=>{
-    it('Deberia Obtener una pelicula',(done)=>{
+  describe('/Get:id', () => {
+    it('Deberia Obtener una pelicula', (done) => {
       let id = "";
-      let data ={
-       "movie": {
+      let data = {
+        "movie": {
           "title": "Artificial Inteligence",
           "year": "2018"
         }
       }
-        request.post('/movie')
-          .set('Accept', 'application/json')
-          .send(data)
-          .expect(201)
-          .expect('Content-Type', /application\/json/)
-        .then(res=>{
-            id = res.body.movie.id;
-            return request
-              .get('/movie/'+id)
-              .set('Accept', 'application/json')
-              .expect(200)
-              .expect("Content-Type", /application\/json/)
-          },done)
-        .then(res =>{
+      request.post('/movie')
+        .set('Accept', 'application/json')
+        .send(data)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+        .then(res => {
+          id = res.body.movie.id;
+          return request
+            .get('/movie/' + id)
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect("Content-Type", /application\/json/)
+        }, done)
+        .then(res => {
           let body = res.body
-          expect(body).to.have.property('movieId')          
+          expect(body).to.have.property('movieId')
           let movie = body.movieId
-          expect(movie).to.have.property("id",id)          
-          expect(movie).to.have.property("title","Artificial Inteligence")
-          expect(movie).to.have.property("year","2018")
+          expect(movie).to.have.property("id", id)
+          expect(movie).to.have.property("title", "Artificial Inteligence")
+          expect(movie).to.have.property("year", "2018")
           done()
-          },done)   
-     
+        }, done)
+
+    })
+  })
+  describe("/PUT", () => {
+    it("Deberia Actualizar una pelicula", (done) => {
+      let id = "";
+      let data = {
+        "movie": {
+          "title": "nodejs",
+          "year": "2017"
+        }
+      }
+      request.post('/movie')
+        .set('Accept', 'application/json')
+        .send(data)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+        .then(res => {
+          id = res.body.movie.id;
+
+          let update = {
+            "movie": {
+              "title": "tarzar",
+              "year": "2017"
+            }
+          }
+          return request
+            .put('/movie/' + id)
+            .set('Accept', 'application/json')
+            .send(update)
+            .expect(200)
+            .expect("Content-Type", /application\/json/)
+        }, done)
+        .then(res => {
+
+          let body = res.body
+          expect(body).to.have.property('movie')
+          let movie = body.movie
+          expect(movie).to.have.property("id", id)
+          expect(movie).to.have.property("title", "tarzar")
+          expect(movie).to.have.property("year", "2017")
+          done()
+        }, done)
+    })
+  })
+   describe("/DELETE", () => {
+    it("Deberia Eliminar una pelicula", (done) => {
+      let id = "";
+      let data = {
+        "movie": {
+          "title": "nodejs",
+          "year": "2017"
+        }
+      }
+      request.post('/movie')
+        .set('Accept', 'application/json')
+        .send(data)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+        .then(res => {
+          id = res.body.movie.id;
+          return request
+            .delete('/movie/' + id)
+            .set('Accept', 'application/json')
+            .expect(400)
+            .expect("Content-Type", /application\/json/)
+        }, done)
+        .then(res => {
+          let body = res.body
+          expect(body).to.be.empy
+          done()
+        }, done)
     })
   })
 })
