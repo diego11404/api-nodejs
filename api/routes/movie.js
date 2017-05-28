@@ -1,19 +1,16 @@
 "use strict"
 const express = require('express'),
   router = express.Router(),
-  _ = require('lodash'),
-  movieSchema = require('../lib/model/movie')
-var movieDb = {}
+  _ = require('lodash')
+ var movieSchema = require('../lib/model/movie')
 
 router.post('/', (req, res, next) => {
 
   let movie = req.body
-  //console.log("data REQ", movie);
   new movieSchema({
     title: movie.title,
     year: movie.year
   }).save((err, data) => {
-    //   console.log("data MONGO", data);
     if (err) throw err
     res.status(201)
       .json({ movie: data })
@@ -31,7 +28,7 @@ router.get('/:id', (req, res, next) => {
   let id = req.params.id
   movieSchema.findOne({ _id: id }, (err, rpt) => {
     res.status(200)
-      .json({ 
+      .json({
         movieId: rpt
       })
   })
@@ -58,4 +55,4 @@ router.delete('/:id', (req, res, next) => {
     res.status(400).json({})
   })
 })
-module.exports = router 
+module.exports = router

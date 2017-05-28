@@ -2,7 +2,7 @@
 let request = require('supertest-as-promised');
 const app = require('../app'),
   _ = require('lodash'),
-  mongoose = require('../lib/model/connection'),
+  mongoose = require('mongoose'),
   conf = require('../lib/config')
 
 request = request(app)
@@ -182,6 +182,7 @@ describe('Recurso /movie', () => {
         .expect('Content-Type', /application\/json/)
         .then(res => {
           id = res.body.movie._id;
+          console.log("DELETE",res.body);
           return request
             .delete('/movie/' + id)
             .set('Accept', 'application/json')
