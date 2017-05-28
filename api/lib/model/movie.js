@@ -1,12 +1,13 @@
 "use strict"
-const mongoose = require('./connection'),
-  schema = mongoose.Schema,
+let mongoose = require('mongoose'),
+  Schema = mongoose.Schema,
 
-  movie = new schema({
-    title: { type: String, require: true },
-    year: { type: String, require: true }
-  })
-  module.exports =  mongoose.model('movie', movie)
+  movie = new Schema({
+    title: String,
+    year: String
+  }),
+  mov = mongoose.model('movie', movie)
+module.exports = mov
 
 
 
