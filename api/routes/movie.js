@@ -1,11 +1,12 @@
 "use strict"
-let express = require('express'),
+const express = require('express'),
   router = express.Router(),
-  _ = require('lodash');
+  _ = require('lodash'),
+  movie = require('../lib/model/movie')
 var movieDb = {}
 
 router.post('/', (req, res, next) => {
-
+ 
   if (!req.body) {
     res.status(403)
       .json({

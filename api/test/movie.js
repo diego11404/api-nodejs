@@ -1,10 +1,20 @@
 "use strict"
 let request = require('supertest-as-promised');
 const app = require('../app'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  mongoose = require('../lib/model/connection'),
+  conf = require('../lib/config')
+
 request = request(app)
 
 describe('Recurso /movie', () => {
+   before(()=>{
+    mongoose.connect(`mongodb://${conf.host}/${conf.database}`)
+  })
+  after((done)=>{
+    mongoose.disconnect(done);
+    mongoose.model={}
+  })
   describe('/Post', () => {
     it('Deberia crear una nueva pelicula', (done) => {
       let movie = {
