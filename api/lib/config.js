@@ -1,4 +1,5 @@
 module.exports={
     host: "localhost",
-    database: "api"
+    database: "api",
+    phace : 'd1eg0'
 }
