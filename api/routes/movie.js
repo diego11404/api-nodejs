@@ -12,8 +12,7 @@ router.post('/', (req, res, next) => {
     year: movie.year
   }).save((err, data) => {
     if (err) throw err
-    res.status(201)
-      .json({ movie: data })
+    res.status(201).json({ movie: data })
   })
 })
 
