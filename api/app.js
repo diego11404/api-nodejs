@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 const index = require('./routes/index'),
   movie = require('./routes/movie'),
   users = require('./routes/users'),
-  auth = require('./routes/auth')
-
+  auth = require('./routes/auth'),
+  authMiddleware = require('./middleware/auth')
 var app = express();
 
 // uncomment after placing your favicon in /public
@@ -20,10 +20,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', index)
-app.use('/movie', movie)
 app.use('/user', users)
 app.use('/auth',auth)
+app.use(authMiddleware)
+app.use('/movie', movie)
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
